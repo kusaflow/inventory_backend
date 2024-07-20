@@ -20,8 +20,8 @@ const getMyPropertites = asyncHandler(async (req, res) => {
     }
 });
 
-//@dec get add properties assigned to logged in user 
-//routes get /api/admin
+//@dec post add properties assigned to logged in user 
+//routes post /api/admin
 //access private
 const AddProperty =  asyncHandler(async (req, res) => {
     const { name, description, location, price, size, images, amenities } = req.body;
@@ -51,6 +51,9 @@ const AddProperty =  asyncHandler(async (req, res) => {
     }
 });
 
+//@dec update my properties assigned to me 
+//routes put /api/admin/:id
+//access private
 const UpdateProperty =  asyncHandler(async (req, res) => {
     const property = await Property.findById(req.params.id);
 
@@ -81,6 +84,9 @@ const UpdateProperty =  asyncHandler(async (req, res) => {
     }
 });
 
+//@dec delete my properties assigned to me 
+//routes Delete /api/admin/:id
+//access private
 const DeleteProperty =  asyncHandler(async (req, res) => {
     const property = await Property.findById(req.params.id);
 

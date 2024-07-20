@@ -30,7 +30,7 @@ const propertySchema = mongoose.Schema({
     }],
     assignedTo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users', // Reference to the User model if you want to assign properties to specific admins
+        ref: 'Users', // Reference to the User model if you want to assign properties to specific admins
         required: false // This could be optional, based on your business logic
     }
 }, {

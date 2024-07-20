@@ -1,6 +1,9 @@
 const  asyncHandler = require("express-async-handler")
 const Property = require("../models/propertyModel")
 
+//@dec get properties filtered
+//routes get /api/properties
+//access public
 const GetFilteredProperty = asyncHandler(async(req, res) =>{
     const { location, minPrice, maxPrice, amenities, minSize, maxSize, name } = req.query;
     
