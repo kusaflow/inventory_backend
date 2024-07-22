@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(Cors({
-    origin: 'http://localhost:5173' // Replace with the URL of your front-end app
+    origin: 'http://localhost:3000' // Replace with the URL of your front-end app
   }));
 app.options('*', Cors());
 

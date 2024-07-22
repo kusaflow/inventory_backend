@@ -24,9 +24,9 @@ const getMyPropertites = asyncHandler(async (req, res) => {
 //routes post /api/admin
 //access private
 const AddProperty =  asyncHandler(async (req, res) => {
-    const { name, description, location, price, size, images, amenities } = req.body;
+    const { name, description, location, price, size, images, amenities, tourLink } = req.body;
 
-    if (!name || !location || !price || !size) {
+    if (!name || !location || !price || !size || !tourLink) {
         return res.status(400).json({ message: "Please include all required fields." });
     }
 
@@ -36,6 +36,7 @@ const AddProperty =  asyncHandler(async (req, res) => {
         name,
         description,
         location,
+        tourLink,
         price,
         size,
         images,
@@ -66,10 +67,11 @@ const UpdateProperty =  asyncHandler(async (req, res) => {
         return res.status(401).json({ message: "Unauthorized to update this property." });
     }
 
-    const { name, description, location, price, size, images, amenities, assignedTo } = req.body;
+    const { name, description, location,tourLink, price, size, images, amenities, assignedTo } = req.body;
     property.name = name || property.name;
     property.description = description || property.description;
     property.location = location || property.location;
+    property.tourLink = tourLink || property.tourLink;
     property.price = price || property.price;
     property.size = size || property.size;
     property.images = images || property.images;

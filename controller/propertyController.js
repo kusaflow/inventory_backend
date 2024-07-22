@@ -5,13 +5,11 @@ const Property = require("../models/propertyModel")
 //routes get /api/properties
 //access public
 const GetFilteredProperty = asyncHandler(async(req, res) =>{
-    const { location, minPrice, maxPrice, amenities, minSize, maxSize, name } = req.query;
+    const {minPrice, maxPrice, minSize, maxSize, text } = req.query;
     
     let query = {};
 
-    if (location) {
-        query.location = { $regex: location, $options: 'i' }; // Case-insensitive matching
-    }
+    
     if (minPrice || maxPrice) {
         query.price = {};
         if (minPrice) query.price.$gte = Number(minPrice);
@@ -22,11 +20,15 @@ const GetFilteredProperty = asyncHandler(async(req, res) =>{
         if (minSize) query.size.$gte = Number(minSize);
         if (maxSize) query.size.$lte = Number(maxSize);
     }
-    if (amenities) {
-        query.amenities = { $all: amenities.split(',') }; // Expects a comma-separated list of amenities
-    }
-    if (name) {
-        query.name = { $regex: name, $options: 'i' }; // Case-insensitive partial text search
+   
+    if (text) {
+        // Using $or to search across multiple fields
+        query.$or = [
+            { location: { $regex: text, $options: 'i' } },
+            { amenities: { $regex: text, $options: 'i' } },
+            { name: { $regex: text, $options: 'i' } },
+            { description: { $regex: text, $options: 'i' } }
+        ];
     }
 
     //res.json({dataOfQuery: query});
