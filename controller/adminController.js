@@ -5,11 +5,34 @@ const Property = require("../models/propertyModel");
 //routes get /api/admin
 //access private
 const getMyPropertites = asyncHandler(async (req, res) => {
+    const {minPrice, maxPrice, minSize, maxSize, text } = req.query;
+    
     let query;
     if (req.user.role === 'superadmin') {
         query = {}; // Super Admins can see all properties
     } else {
         query = { assignedTo: req.user._id }; // Property Admins see only assigned properties
+    }
+
+    if (minPrice || maxPrice) {
+        query.price = {};
+        if (minPrice) query.price.$gte = Number(minPrice);
+        if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+    if (minSize || maxSize) {
+        query.size = {};
+        if (minSize) query.size.$gte = Number(minSize);
+        if (maxSize) query.size.$lte = Number(maxSize);
+    }
+   
+    if (text) {
+        // Using $or to search across multiple fields
+        query.$or = [
+            { location: { $regex: text, $options: 'i' } },
+            { amenities: { $regex: text, $options: 'i' } },
+            { name: { $regex: text, $options: 'i' } },
+            { description: { $regex: text, $options: 'i' } }
+        ];
     }
 
     try {
@@ -24,7 +47,7 @@ const getMyPropertites = asyncHandler(async (req, res) => {
 //routes post /api/admin
 //access private
 const AddProperty =  asyncHandler(async (req, res) => {
-    const { name, description, location, price, size, images, amenities, tourLink } = req.body;
+    const { name, description, location, price, size, images, amenities, tourLink, assignedTo} = req.body;
 
     if (!name || !location || !price || !size || !tourLink) {
         return res.status(400).json({ message: "Please include all required fields." });
@@ -41,7 +64,7 @@ const AddProperty =  asyncHandler(async (req, res) => {
         size,
         images,
         amenities,
-        assignedTo: req.user._id
+        assignedTo,
     });
 
     try {

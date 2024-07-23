@@ -123,11 +123,26 @@ const login = asyncHandler(async (req, res) => {
 
 
 //@dec current user
-//routes get /api/users
+//routes get /api/users/current
 //access private
 const current = asyncHandler(async (req, res) => {
     res.status(200).json({user : req.user}); 
 });
 
-module.exports = {register, login, current};
+
+//@dec all user
+//routes get /api/users/all
+//access private
+const allUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.status(200).json(users);
+});
+
+const userById = asyncHandler(async (req, res) => {
+    const users = await User.find({username: req.id});
+    res.status(200).json(users);
+});
+
+
+module.exports = {register, login, current, allUsers, userById};
 
