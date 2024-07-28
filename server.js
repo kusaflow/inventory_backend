@@ -20,6 +20,9 @@ app.use("/api/users", require("./routes/UserRoutes"));
 app.use("/api/properties", require("./routes/ProprtyRoutes"));
 app.use("/api/admin", require("./routes/AdminRoutes"));
 app.use("/api/bookings", require("./routes/BookingRouters"));
+app.get("/", (req, res)=>{
+  return res.send({server : "working"})
+});
 
 
 app.listen(port, () => {
