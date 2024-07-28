@@ -132,4 +132,21 @@ const DeleteProperty =  asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = {getMyPropertites, AddProperty, UpdateProperty, DeleteProperty};
+
+
+//@dec Get a property 
+//routes GET /api/admin/:id
+//access private
+const GetPropertyByID =  asyncHandler(async (req, res) => {
+    const property = await Property.findById(req.params.id).populate("assignedTo    ");
+
+    if (!property) {
+        return res.status(404).json({ message: "Property not found." });
+    }
+
+    return res.json(property);
+    
+
+});
+
+module.exports = {getMyPropertites, AddProperty, UpdateProperty, DeleteProperty, GetPropertyByID};

@@ -86,11 +86,42 @@ const updateBooking = asyncHandler(async(req, res)=>{
         booking.property = property || booking.property;
 
         const updatedBooking = await booking.save();
-        res.json(updatedBooking);
+        return res.json(updatedBooking);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 })
 
+const DeleteBooking = asyncHandler(async (req, res) => {
+    try{
+        const _booking = await Booking.findById(req.params.id);
+        if (!_booking)
+            return res.status(404).json({ message: 'Booking not found' });
 
-module.exports = {postBooking, Prop_Mngr_getMyBooking, Cust_myBookings, updateBooking};
+        try {
+            await Booking.deleteOne(_booking);
+            return res.json({ message: 'booking removed' });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({message : err.message})
+    }
+})
+
+//@dec Get a booking 
+//routes GET /api/booking/:id
+//access private
+const GetBookingByID =  asyncHandler(async (req, res) => {
+    const book = await Booking.findById(req.params.id);
+
+    if (!book) {
+        return res.status(404).json({ message: "Booking not found." });
+    }
+
+    return res.json(book);
+});
+
+
+module.exports = {postBooking, Prop_Mngr_getMyBooking, Cust_myBookings, updateBooking, DeleteBooking, GetBookingByID};

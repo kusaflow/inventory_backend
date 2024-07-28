@@ -16,7 +16,7 @@ const bookingSchema = mongoose.Schema({
         required: true
     },
     timeSlot: {
-        type: String, // You could use ISO string format or just a simple "HH:MM AM/PM" format depending on your needs.
+        type: String, 
         required: true
     },
     status: {

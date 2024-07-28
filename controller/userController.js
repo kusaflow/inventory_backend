@@ -144,5 +144,40 @@ const userById = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = {register, login, current, allUsers, userById};
+// Update user role
+//routes get /api/users/role
+//access private
+const updateUserRole = asyncHandler(async (req, res) => {
+    const { userId, role } = req.body;
+    const user = await User.findById(userId);
+
+    if (user) {
+        user.role = role;
+        await user.save();
+        res.status(200).json({ message: 'User role updated successfully' });
+    } else {
+        res.status(404).json({ message: 'User not found' });
+        throw new Error('User not found');
+    }
+});
+
+// Update user password
+//routes get /api/users/password
+//access private
+const updateUserPassword = asyncHandler(async (req, res) => {
+    const { userId, newPassword } = req.body;
+    const user = await User.findById(userId);
+
+    if (user) {
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+        res.status(200).json({ message: 'User password updated successfully' });
+    } else {
+        res.status(404).json({ message: 'User not found' });
+        throw new Error('User not found');
+    }
+});
+
+
+module.exports = {register, login, current, allUsers, userById, updateUserRole, updateUserPassword };
 
