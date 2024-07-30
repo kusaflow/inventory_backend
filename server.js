@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(Cors({
-    origin: 'http://localhost:3000' 
+    origin: 'https://inv-next-frontend.vercel.app'//'http://localhost:3000' 
   }));
 app.options('*', Cors());
 
