@@ -138,7 +138,7 @@ const DeleteProperty =  asyncHandler(async (req, res) => {
 //routes GET /api/admin/:id
 //access private
 const GetPropertyByID =  asyncHandler(async (req, res) => {
-    const property = await Property.findById(req.params.id).populate("assignedTo    ");
+    const property = await Property.findById(req.params.id).populate("assignedTo");
 
     if (!property) {
         return res.status(404).json({ message: "Property not found." });

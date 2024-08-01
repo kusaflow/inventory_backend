@@ -27,7 +27,8 @@ const GetFilteredProperty = asyncHandler(async(req, res) =>{
             { location: { $regex: text, $options: 'i' } },
             { amenities: { $regex: text, $options: 'i' } },
             { name: { $regex: text, $options: 'i' } },
-            { description: { $regex: text, $options: 'i' } }
+            { description: { $regex: text, $options: 'i' } },
+           // { size: { $regex: text, $options: 'i' } }
         ];
     }
 
@@ -41,4 +42,25 @@ const GetFilteredProperty = asyncHandler(async(req, res) =>{
     }
 });
 
-module.exports = {GetFilteredProperty}
+// @dec get min and max values for price and size
+// routes get /api/properties/limits
+// access public
+const GetPropertyLimits = asyncHandler(async (req, res) => {
+    try {
+        const minPrice = await Property.find().sort({ price: 1 }).limit(1).select('price');
+        const maxPrice = await Property.find().sort({ price: -1 }).limit(1).select('price');
+        const minSize = await Property.find().sort({ size: 1 }).limit(1).select('size');
+        const maxSize = await Property.find().sort({ size: -1 }).limit(1).select('size');
+
+        return res.json({
+            minPrice: minPrice[0]?.price || 0,
+            maxPrice: maxPrice[0]?.price || 0,
+            minSize: minSize[0]?.size || 0,
+            maxSize: maxSize[0]?.size || 0,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+module.exports = {GetFilteredProperty, GetPropertyLimits}

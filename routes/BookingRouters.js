@@ -5,9 +5,9 @@ const {Prop_Mngr_getMyBooking, postBooking, Cust_myBookings, updateBooking, Dele
 
 const router = express.Router();
 
-router.post("/", validateToken, postBooking);
-router.get("/mybookings_PM", validateToken, Prop_Mngr_getMyBooking);
-router.get("/mybookings_Cust", validateToken, Cust_myBookings);
+router.post("/", validateToken,checkRole(['customer','Propertyadmin','superadmin']), postBooking);
+router.get("/mybookings_PM", validateToken, checkRole(['Propertyadmin', 'superadmin']), Prop_Mngr_getMyBooking);
+router.get("/mybookings_Cust", validateToken, checkRole(['customer','Propertyadmin','superadmin']), Cust_myBookings);
 router.put("/:id", validateToken,checkRole(["Propertyadmin"]) ,updateBooking);
 router.delete("/:id", validateToken ,DeleteBooking);
 router.get("/:id", validateToken ,GetBookingByID);

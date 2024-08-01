@@ -2,11 +2,11 @@ const express = require('express');
 
 const router = express.Router();
 
-const {validateToken}  = require('../middleware/validateTokenHandler');
-const {GetFilteredProperty} = require("../controller/propertyController");
+const {GetFilteredProperty, GetPropertyLimits} = require("../controller/propertyController");
 
 
 router.get('/', GetFilteredProperty);
+router.get('/limits', GetPropertyLimits);
 
 
 module.exports = router;

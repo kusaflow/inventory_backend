@@ -5,10 +5,11 @@ const router = express.Router();
 const {register, login, current, allUsers, userById, updateUserRole, updateUserPassword } = require('../controller/userController');
 const {validateToken}  = require('../middleware/validateTokenHandler');
 const checkRole = require("../middleware/checkRole")
+
 router.route('/register').post(register);
 router.route('/login').post(login);
 router.get('/current', validateToken, current);
-router.get('/all', validateToken, allUsers);
+router.get('/all', validateToken,checkRole(['superadmin', "Superme_admin"]), allUsers);
 
 router.get('/:id', validateToken, userById);
 router.put('/role', validateToken,checkRole(["Superme_admin"]), updateUserRole);

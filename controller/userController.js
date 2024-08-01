@@ -33,7 +33,12 @@ const register = asyncHandler(async (req, res) => {
     //already a user check
     const userExists = await User.findOne({email});
     if(userExists){
-        res.status(400).json({msg : "User already exists"});
+        res.status(400).json({msg : "User Email already exists"});
+        throw new Error("User Email already exists");
+    }
+    const userExists2 = await User.findOne({username});
+    if(userExists){
+        res.status(400).json({msg : "Username already exists"});
         throw new Error("User already exists");
     }
 
